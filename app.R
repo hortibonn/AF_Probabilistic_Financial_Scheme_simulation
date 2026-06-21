@@ -520,7 +520,7 @@ ui <- fluidPage(
           tags$a("Disclaimer", href = "https://agroreforest.eu/reforest-tools-disclaimer/",
                  target = "_blank"),
           " | ",  
-          tags$a("View Source", href = "https://github.com/hortibonn/AF_DecisionTool_with_Financial_Scheme",
+          tags$a("View Source", href = "https://github.com/hortibonn/AF_Probabilistic_Financial_Scheme_simulation",
                  target = "_blank")
         ),
         br(), #br(),br(), br(),
@@ -620,8 +620,8 @@ server <- function(input, output, session) {
     "cooperative_labour_reduction_perc_c"
   )
   
-  advisory_digital_vars <- c(
-    "digital_tool_subscription_discount_amount_c"
+  advisory_dial_vars <- c(
+    "dial_tool_subscription_discount_amount_c"
   )
   
 
