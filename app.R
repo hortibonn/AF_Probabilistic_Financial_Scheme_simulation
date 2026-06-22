@@ -101,6 +101,156 @@ sheet_meta_finance <- readxl::read_excel(file_path_vars1, sheet = "sheet_names",
 sheet_names_finance <- sheet_meta_finance$sheet_names
 sheet_icons_finance <- setNames(sheet_meta_finance$icon, sheet_meta_finance$sheet_names)
 
+# Finance visibility configuration ----
+
+bank_loan_vars <- c(
+  "bank_loan_amount_c",
+  "bank_interest_rate_c",
+  "bank_maturity_year_c",
+  "bank_repayment_start_year_c",
+  "bank_annual_repayment_amount_p"
+)
+
+impact_loan_vars <- c(
+  "impact_invst_fund_loan_c",
+  "impact_invst_fund_interest_rate_c",
+  "impact_invst_bank_maturity_year_c",
+  "impact_invst_fund_repayment_start_year_c",
+  "impact_invst_annual_repayment_amount_p"
+)
+
+dev_bank_loan_vars <- c(
+  "Dev_bank_loan_amount_c",
+  "Dev_bank_interest_rate_c",
+  "Dev_bank_maturity_year_c",
+  "Dev_bank_repayment_start_year_c",
+  "Dev_bank_annual_repayment_amount_p"
+)
+
+guarantee_vars <- c(
+  "guarantee_cover_rate_c",
+  "guarantee_default_loss_rate_c",
+  "guarantee_fee_rate_c"
+)
+
+insurance_vars <- c(
+  "insurance_cover_rate_c",
+  "insurance_payout_amount_c",
+  "insurance_annual_premium_c",
+  "insurance_annual_premium_surcharge_c"
+)
+
+advisory_organisation_vars <- c(
+  "organisation_nominal_fee_c",
+  "organisation_consultation_reduction_perc_c"
+)
+
+advisory_cooperative_vars <- c(
+  "cooperative_nominal_fee_c",
+  "cooperative_machinery_reduction_perc_c",
+  "cooperative_labour_reduction_perc_c"
+)
+
+advisory_digital_vars <- c(
+  "digital_tool_subscription_discount_amount_c"
+)
+
+market_price_guarantee_vars <- c(
+  "price_guarantee_share_c",
+  "table_apple_guaranteed_price_p",
+  "bqual_apple_guaranteed_price_p",
+  "juice_apple_guaranteed_price_p",
+  "maize_guaranteed_price_p",
+  "wheat_guaranteed_price_p",
+  "barley_guaranteed_price_p",
+  "rapeseed_guaranteed_price_p"
+)
+
+market_price_premium_vars <- c(
+  "price_premium_share_p",
+  "table_apple_price_premium_p",
+  "bqual_apple_price_premium_p",
+  "juice_apple_price_premium_p",
+  "maize_price_premium_p",
+  "wheat_price_premium_p",
+  "barley_price_premium_p",
+  "rapeseed_price_premium_p"
+)
+
+finance_condition_for_var <- function(var_name) {
+  if (
+    is.null(var_name) ||
+    length(var_name) == 0L ||
+    is.na(var_name[[1]]) ||
+    !nzchar(as.character(var_name[[1]]))
+  ) {
+    return("true")
+  }
+  
+  var_name <- as.character(var_name[[1]])
+  
+  if (var_name %in% bank_loan_vars) {
+    return("input['selected_loan_scheme_c'] === 'bank'")
+  }
+  
+  if (var_name %in% impact_loan_vars) {
+    return("input['selected_loan_scheme_c'] === 'impact'")
+  }
+  
+  if (var_name %in% dev_bank_loan_vars) {
+    return("input['selected_loan_scheme_c'] === 'dev_bank'")
+  }
+  
+  if (var_name %in% guarantee_vars) {
+    return("input['risk_mitigation_guarantee_c'] === true")
+  }
+  
+  if (var_name %in% insurance_vars) {
+    return("input['risk_mitigation_insurance_c'] === true")
+  }
+  
+  if (var_name %in% advisory_organisation_vars) {
+    return(
+      "input['use_advisory'] === true &&
+       input['advisory_support_types'] &&
+       input['advisory_support_types'].indexOf('organisation') >= 0"
+    )
+  }
+  
+  if (var_name %in% advisory_cooperative_vars) {
+    return(
+      "input['use_advisory'] === true &&
+       input['advisory_support_types'] &&
+       input['advisory_support_types'].indexOf('cooperative') >= 0"
+    )
+  }
+  
+  if (var_name %in% advisory_digital_vars) {
+    return(
+      "input['use_advisory'] === true &&
+       input['advisory_support_types'] &&
+       input['advisory_support_types'].indexOf('digital_tools') >= 0"
+    )
+  }
+  
+  if (var_name %in% market_price_guarantee_vars) {
+    return(
+      "input['use_market_access'] === true &&
+       input['market_access_types'] &&
+       input['market_access_types'].indexOf('price_guarantees') >= 0"
+    )
+  }
+  
+  if (var_name %in% market_price_premium_vars) {
+    return(
+      "input['use_market_access'] === true &&
+       input['market_access_types'] &&
+       input['market_access_types'].indexOf('price_premia') >= 0"
+    )
+  }
+  
+  "true"
+}
 
 # UI ----
 ui <- fluidPage(
@@ -569,120 +719,7 @@ server <- function(input, output, session) {
   `%||%` <- function(a, b) if (is.null(a) || length(a) == 0 || all(is.na(a))) b else a
   
   sanitize_id <- function(x) gsub("[^A-Za-z0-9]", "_", x)
-  
-  # Variables that should only appear for selected finance options
-  bank_loan_vars <- c(
-    "bank_loan_amount_c",
-    "bank_interest_rate_c",
-    "bank_maturity_year_c",
-    "bank_repayment_start_year_c",
-    "bank_annual_repayment_amount_p"
-  )
-  
-  impact_loan_vars <- c(
-    "impact_invst_fund_loan_c",
-    "impact_invst_fund_interest_rate_c",
-    "impact_invst_bank_maturity_year_c",
-    "impact_invst_fund_repayment_start_year_c",
-    "impact_invst_annual_repayment_amount_p"
-  )
-  
-  dev_bank_loan_vars <- c(
-    "Dev_bank_loan_amount_c",
-    "Dev_bank_interest_rate_c",
-    "Dev_bank_maturity_year_c",
-    "Dev_bank_repayment_start_year_c",
-    "Dev_bank_annual_repayment_amount_p"
-  )
-  
-  guarantee_vars <- c(
-    #"guarantee_amount_c",
-    "guarantee_cover_rate_c",
-    "guarantee_default_loss_rate_c",
-    "guarantee_fee_rate_c"
-  )
-  
-  insurance_vars <- c(
-    "insurance_cover_rate_c",
-    "insurance_payout_amount_c",
-    "insurance_annual_premium_c",
-    "insurance_annual_premium_surcharge_c"
-  )
-  
-  advisory_organisation_vars <- c(
-    "organisation_nominal_fee_c",
-    "organisation_consultation_reduction_perc_c"
-  )
-  
-  advisory_cooperative_vars <- c(
-    "cooperative_nominal_fee_c",
-    "cooperative_machinery_reduction_perc_c",
-    "cooperative_labour_reduction_perc_c"
-  )
-  
-  advisory_dial_vars <- c(
-    "dial_tool_subscription_discount_amount_c"
-  )
-  
 
-  market_price_guarantee_vars <- c(
-    "price_guarantee_share_c",
-    "table_apple_guaranteed_price_p",
-    "bqual_apple_guaranteed_price_p",
-    "juice_apple_guaranteed_price_p",
-    "maize_guaranteed_price_p",
-    "wheat_guaranteed_price_p",
-    "barley_guaranteed_price_p",
-    "rapeseed_guaranteed_price_p"
-  )
-  
-  market_price_premium_vars <- c(
-    "price_premium_share_p",
-    "table_apple_price_premium_p",
-    "bqual_apple_price_premium_p",
-    "juice_apple_price_premium_p",
-    "maize_price_premium_p",
-    "wheat_price_premium_p",
-    "barley_price_premium_p",
-    "rapeseed_price_premium_p"
-  )
-  
-  finance_condition_for_var <- function(var_name) {
-    if (is.na(var_name) || !nzchar(var_name)) return("true")
-    
-    if (var_name %in% bank_loan_vars) {
-      return("input['selected_loan_scheme_c'] === 'bank'")
-    }
-    if (var_name %in% impact_loan_vars) {
-      return("input['selected_loan_scheme_c'] === 'impact'")
-    }
-    if (var_name %in% dev_bank_loan_vars) {
-      return("input['selected_loan_scheme_c'] === 'dev_bank'")
-    }
-    if (var_name %in% guarantee_vars) {
-      return("input['risk_mitigation_guarantee_c'] === true")
-    }
-    if (var_name %in% insurance_vars) {
-      return("input['risk_mitigation_insurance_c'] === true")
-    }
-    if (var_name %in% advisory_organisation_vars) {
-      return("input['use_advisory'] === true && input['advisory_support_types'] && input['advisory_support_types'].indexOf('organisation') >= 0")
-    }
-    if (var_name %in% advisory_cooperative_vars) {
-      return("input['use_advisory'] === true && input['advisory_support_types'] && input['advisory_support_types'].indexOf('cooperative') >= 0")
-    }
-    if (var_name %in% advisory_digital_vars) {
-      return("input['use_advisory'] === true && input['advisory_support_types'] && input['advisory_support_types'].indexOf('digital_tools') >= 0")
-    }
-    if (var_name %in% market_price_guarantee_vars) {
-      return("input['use_market_access'] === true && input['market_access_types'] && input['market_access_types'].indexOf('price_guarantees') >= 0")
-    }
-    if (var_name %in% market_price_premium_vars) {
-      return("input['use_market_access'] === true && input['market_access_types'] && input['market_access_types'].indexOf('price_premia') >= 0")
-    }
-    
-    "true"
-  }
   ## Dynamic expertise-filter module ----
   # helper that sanitises category names into safe IDs
   sanitize <- function(x) gsub("[^A-Za-z0-9]", "_", x)
