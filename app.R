@@ -142,7 +142,9 @@ insurance_vars <- c(
 
 advisory_organisation_vars <- c(
   "organisation_nominal_fee_c",
-  "organisation_consultation_reduction_perc_c"
+  "organisation_consultation_reduction_perc_c",
+  "perc_adv_exp_p",
+  "perc_adv_design_p"
 )
 
 advisory_cooperative_vars <- c(
