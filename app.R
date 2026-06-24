@@ -1204,16 +1204,16 @@ server <- function(input, output, session) {
     content  = function(file) write_csv(current_input_table(), file)
   )
   
-  output$finance_summary_header <- renderUI({
-    req(rv_fin$finance_summary_table)
-    tags$h4("Finance Summary")
-  })
+  #output$finance_summary_header <- renderUI({
+  #  req(rv_fin$finance_summary_table)
+  #  tags$h4("Finance Summary")
+  #})
   
-  output$finance_summary_note <- renderUI({
-    req(rv_fin$finance_summary_table)
-    tags$p(
-      "Values shown as median (5-95% quantiles) across simulations.",
-      style = "text-align:left; font-size: 12px;"
+ # output$finance_summary_note <- renderUI({
+  #  req(rv_fin$finance_summary_table)
+   # tags$p(
+    #  "Values shown as median (5-95% quantiles) across simulations.",
+    #  style = "text-align:left; font-size: 12px;"
     )
   })
   
@@ -1742,7 +1742,7 @@ server <- function(input, output, session) {
         as.numeric(x[1])
       }
       
-      # Finance summary table (Main panel) ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â with uncertainty
+      # Finance summary table (Main panel) with uncertainty
       mc_data <- mcSimulation_results()
       req(!is.null(mc_data$y))
       
