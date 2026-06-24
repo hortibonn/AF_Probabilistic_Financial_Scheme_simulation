@@ -1275,10 +1275,9 @@ server <- function(input, output, session) {
       AF_total_cost <- AF_total_investment_cost + AF_total_running_cost
       AF_bottom_line_benefit <- AF_total_benefit - AF_total_cost
 
-      AF_total_investment_cost <- get_row_vector( row, "AF_total_investment_cost", n_years, default = NA_real_)
-if (all(is.na(AF_total_investment_cost))) {
-  AF_total_investment_cost <- get_row_vector( row, "AF_investment_cost", n_years) }
-      #AF_total_investment_cost_subs <- get_row_vector(row, "AF_total_investment_cost_subs", n_years)
+      #AF_total_investment_cost <- get_row_vector( row, "AF_total_investment_cost", n_years, default = NA_real_)
+      #if (all(is.na(AF_total_investment_cost))) { AF_total_investment_cost <- get_row_vector( row, "AF_investment_cost", n_years) }
+      AF_total_investment_cost_subs <- get_row_vector(row, "AF_total_investment_cost_subs", n_years)
       AF_total_running_cost_subs <- get_row_vector(row, "AF_total_running_cost_subs", n_years)
       AF_total_benefit_subs <- get_row_vector(row, "AF_total_benefit_subs", n_years)
       AF_total_cost_subs <- AF_total_investment_cost_subs + AF_total_running_cost_subs
