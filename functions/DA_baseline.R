@@ -556,6 +556,7 @@ AF_benefit_with_Risks <- function(x, varnames)
     Treeless_bottom_line_benefit = Treeless_bottom_line_benefit,
     
     AF_investment_cost = AF_investment_cost,
+    AF_total_investment_cost = AF_investment_cost,
     AF_total_running_cost = AF_total_running_cost,
     AF_total_benefit = AF_total_benefit,
     
