@@ -580,18 +580,18 @@ ui <- fluidPage(
         tags$h6(
           "App estimates long-term profitability of transition from a treeless arable field to an alley-cropping system with fruit trees under temperate European conditions.", # It works for any tree species, so you can easily explore the impact on your farmÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢s Net Present Value (NPV).",
           tags$br(),
-          #tags$br(),
+          tags$br(),
           "Use the tabs on the left to adjust variable ranges based on your local conditions or design goals.",
           "App displays costs and prices in EUROS (€), please enter your data in your local currency. Funding information has been collected in each country in it's own currency, so using yours will keep the results accurate.",
           tags$br(),
-          #tags$br(),
+          tags$br(),
           "Click ‘Run model’ to perform a Monte Carlo simulation using random combinations from your defined ranges.You can save/load inputs, and once the model runs, results will appear below. You can also save these figures for your reports.", #tags$br(),
           tags$br(),
           #"In the ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¹Ã…â€œFunding schemesÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ tab, select any relevant funding options for your region.",
           tags$br(),
           # "DeFAF-suggested funding for German agroforestry: Annual support of 600 ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ per ha of wooded area and investment costs are to be funded at 100 % for first 10 ha of wooded area, 80 % for the next 10 ha, 50 % for additional area.",
-          # tags$br(),
-          "AF Financial Scheme developed by EMEA is modelled here and you can select the ones that is most relevant to you. If you think of any innovative support scheme we have not considered here please reach out to",
+          tags$br(),
+          "AF Financial Scheme developed by EMEA is modeled here, and you can select the ones that are most relevant to you. If you think of any innovative support scheme we have not considered here please reach out to",
           tags$a(href = "mailto:tiago.zibecchi@euromed-economists.org", "Tiago Zibecchi."),
           tags$br(),
           tags$br(),
@@ -1782,7 +1782,7 @@ server <- function(input, output, session) {
         geom_density(alpha = 0.5) +
         theme_minimal(base_size = 10) +
         labs(
-          x = paste0("Net Present Value (ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬) over ",input$n_years_c, " years for ",
+          x = paste0("Net Present Value (€) over ",input$n_years_c, " years for ",
                      input$arable_area_treeless_c, " ha."
           ),
           y    = "Probability",
@@ -1796,7 +1796,7 @@ server <- function(input, output, session) {
         add_meta(
           title    = "Figure 1. Probabilistic distributions of Net Present Value",
           subtitle = "Agroforestry with selected support vs. conventional farming",
-          caption  = "The figure above shows the comparison of Net Present Value (NPV) outcomes for agroforestry (alley cropping with fruit trees) vs monoculture system. The x-axis displays NPV values (i.e., the sum of discounted annual cash flows). The higher and wider the distribution, the greater the potential return and variability in outcomes under that system."
+          caption  = "The figure above shows the comparison of Net Present Value (NPV) outcomes for agroforestry (alley cropping with fruit trees) vs a monoculture system. The x-axis displays NPV values (i.e., the sum of discounted annual cash flows). The higher and wider the distribution, the greater the potential return and variability in outcomes under that system."
         ) +
         theme(
           plot.title = element_textbox_simple(
